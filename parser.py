@@ -56,8 +56,11 @@ def p_operators(p):
 def p_print_statement(p):
     """print : PRINT tvariable SEMI
             | PRINT ID SEMI"""
+    # para acceder al tipo de token p[n].type
+    # para acceder al valor del token p[n].value
     p[0] = {'name': p[1], 'value': p[2]}
-    print(p[0])
+    print(p[0].type)
+    print(p[2].value)
 
 
 def p_expression(p):
@@ -92,7 +95,8 @@ def p_tvariable(p):
                  | FLOAT
                  | CHARACTER
                  | boolean"""
-    p[0] = p[1]
+    print()
+    p[0] = p.slice[1]
 
 
 def p_assign(p):
