@@ -59,7 +59,6 @@ def p_print_statement(p):
     # para acceder al tipo de token p[n].type
     # para acceder al valor del token p[n].value
     p[0] = {'name': p[1], 'value': p[2]}
-    print(p[0].type)
     print(p[2].value)
 
 
@@ -125,6 +124,7 @@ pp = pprint.PrettyPrinter(indent=4)
 
 code = """INIT { 
     PRINT 10;
+    PRINT "PIPE ES GEY";
 }"""
 
 result = parser.parse(code)
