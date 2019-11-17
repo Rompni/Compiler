@@ -5,262 +5,1032 @@ Unused terminals:
     AND
     COMMA
     DIVIDE
-    ELSE
-    EQ
-    FOR
-    GE
-    GT
-    IF
-    LAND
-    LBRACE
+    END
     LBRACKET
-    LE
-    LNOT
-    LOR
-    LPAREN
     LSHIFT
-    LT
     MINUS
     MODULO
-    NE
     NOT
     OR
     PERIOD
     PLUS
-    RBRACE
     RBRACKET
-    RPAREN
     RSHIFT
     TIMES
-    WHILE
     XOR
 
 Grammar
 
-Rule 0     S' -> all_sentences
-Rule 1     all_sentences -> list_sentences sentence
-Rule 2     list_sentences -> sentence
-Rule 3     sentence -> declaration
-Rule 4     sentence -> assign
-Rule 5     declaration -> IDTYPE ID SEMI
-Rule 6     tvariable -> STRING
-Rule 7     tvariable -> ID
-Rule 8     tvariable -> INTEGER
-Rule 9     tvariable -> FLOAT
-Rule 10    tvariable -> CHARACTER
-Rule 11    assign -> IDTYPE ID EQUAL tvariable SEMI
+Rule 0     S' -> start
+Rule 1     start -> INIT body
+Rule 2     body -> LBRACE all_sentences RBRACE
+Rule 3     all_sentences -> list_sentences sentence
+Rule 4     list_sentences -> sentence
+Rule 5     sentence -> declaration
+Rule 6     sentence -> assign
+Rule 7     sentence -> function_dec
+Rule 8     sentence -> empty
+Rule 9     declaration -> IDTYPE ID SEMI
+Rule 10    boolean -> TRUE
+Rule 11    boolean -> FALSE
+Rule 12    operator -> LOR
+Rule 13    operator -> LAND
+Rule 14    operator -> LNOT
+Rule 15    operator -> LT
+Rule 16    operator -> GT
+Rule 17    operator -> LE
+Rule 18    operator -> GE
+Rule 19    operator -> EQ
+Rule 20    operator -> NE
+Rule 21    expression -> tvariable operator tvariable
+Rule 22    function_cond -> IF LPAREN expression RPAREN body
+Rule 23    function_cond -> IF LPAREN expression RPAREN body ELSE body
+Rule 24    function_iter -> iteration_statement
+Rule 25    iteration_statement -> FOR LPAREN ID COLON ID RPAREN body
+Rule 26    iteration_statement -> WHILE LPAREN expression RPAREN body
+Rule 27    function_dec -> function_iter function_dec
+Rule 28    function_dec -> function_cond function_dec
+Rule 29    function_dec -> empty
+Rule 30    tvariable -> STRING
+Rule 31    tvariable -> ID
+Rule 32    tvariable -> INTEGER
+Rule 33    tvariable -> FLOAT
+Rule 34    tvariable -> CHARACTER
+Rule 35    tvariable -> boolean
+Rule 36    assign -> IDTYPE ID EQUAL tvariable SEMI
+Rule 37    empty -> <empty>
 
 Terminals, with rules where they appear
 
 AND                  : 
-CHARACTER            : 10
+CHARACTER            : 34
+COLON                : 25
 COMMA                : 
 DIVIDE               : 
-ELSE                 : 
-EQ                   : 
-EQUAL                : 11
-FLOAT                : 9
-FOR                  : 
-GE                   : 
-GT                   : 
-ID                   : 5 7 11
-IDTYPE               : 5 11
-IF                   : 
-INTEGER              : 8
-LAND                 : 
-LBRACE               : 
+ELSE                 : 23
+END                  : 
+EQ                   : 19
+EQUAL                : 36
+FALSE                : 11
+FLOAT                : 33
+FOR                  : 25
+GE                   : 18
+GT                   : 16
+ID                   : 9 25 25 31 36
+IDTYPE               : 9 36
+IF                   : 22 23
+INIT                 : 1
+INTEGER              : 32
+LAND                 : 13
+LBRACE               : 2
 LBRACKET             : 
-LE                   : 
-LNOT                 : 
-LOR                  : 
-LPAREN               : 
+LE                   : 17
+LNOT                 : 14
+LOR                  : 12
+LPAREN               : 22 23 25 26
 LSHIFT               : 
-LT                   : 
+LT                   : 15
 MINUS                : 
 MODULO               : 
-NE                   : 
+NE                   : 20
 NOT                  : 
 OR                   : 
 PERIOD               : 
 PLUS                 : 
-RBRACE               : 
+RBRACE               : 2
 RBRACKET             : 
-RPAREN               : 
+RPAREN               : 22 23 25 26
 RSHIFT               : 
-SEMI                 : 5 11
-STRING               : 6
+SEMI                 : 9 36
+STRING               : 30
 TIMES                : 
-WHILE                : 
+TRUE                 : 10
+WHILE                : 26
 XOR                  : 
 error                : 
 
 Nonterminals, with rules where they appear
 
-all_sentences        : 0
-assign               : 4
-declaration          : 3
-list_sentences       : 1
-sentence             : 1 2
-tvariable            : 11
+all_sentences        : 2
+assign               : 6
+body                 : 1 22 23 23 25 26
+boolean              : 35
+declaration          : 5
+empty                : 8 29
+expression           : 22 23 26
+function_cond        : 28
+function_dec         : 7 27 28
+function_iter        : 27
+iteration_statement  : 24
+list_sentences       : 3
+operator             : 21
+sentence             : 3 4
+start                : 0
+tvariable            : 21 21 36
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . all_sentences
-    (1) all_sentences -> . list_sentences sentence
-    (2) list_sentences -> . sentence
-    (3) sentence -> . declaration
-    (4) sentence -> . assign
-    (5) declaration -> . IDTYPE ID SEMI
-    (11) assign -> . IDTYPE ID EQUAL tvariable SEMI
+    (0) S' -> . start
+    (1) start -> . INIT body
 
-    IDTYPE          shift and go to state 6
+    INIT            shift and go to state 2
 
-    all_sentences                  shift and go to state 1
-    list_sentences                 shift and go to state 2
-    sentence                       shift and go to state 3
-    declaration                    shift and go to state 4
-    assign                         shift and go to state 5
+    start                          shift and go to state 1
 
 state 1
 
-    (0) S' -> all_sentences .
+    (0) S' -> start .
 
 
 
 state 2
 
-    (1) all_sentences -> list_sentences . sentence
-    (3) sentence -> . declaration
-    (4) sentence -> . assign
-    (5) declaration -> . IDTYPE ID SEMI
-    (11) assign -> . IDTYPE ID EQUAL tvariable SEMI
+    (1) start -> INIT . body
+    (2) body -> . LBRACE all_sentences RBRACE
 
-    IDTYPE          shift and go to state 6
+    LBRACE          shift and go to state 4
 
-    sentence                       shift and go to state 7
-    declaration                    shift and go to state 4
-    assign                         shift and go to state 5
+    body                           shift and go to state 3
 
 state 3
 
-    (2) list_sentences -> sentence .
+    (1) start -> INIT body .
 
-    IDTYPE          reduce using rule 2 (list_sentences -> sentence .)
+    $end            reduce using rule 1 (start -> INIT body .)
 
 
 state 4
 
-    (3) sentence -> declaration .
+    (2) body -> LBRACE . all_sentences RBRACE
+    (3) all_sentences -> . list_sentences sentence
+    (4) list_sentences -> . sentence
+    (5) sentence -> . declaration
+    (6) sentence -> . assign
+    (7) sentence -> . function_dec
+    (8) sentence -> . empty
+    (9) declaration -> . IDTYPE ID SEMI
+    (36) assign -> . IDTYPE ID EQUAL tvariable SEMI
+    (27) function_dec -> . function_iter function_dec
+    (28) function_dec -> . function_cond function_dec
+    (29) function_dec -> . empty
+    (37) empty -> .
+    (24) function_iter -> . iteration_statement
+    (22) function_cond -> . IF LPAREN expression RPAREN body
+    (23) function_cond -> . IF LPAREN expression RPAREN body ELSE body
+    (25) iteration_statement -> . FOR LPAREN ID COLON ID RPAREN body
+    (26) iteration_statement -> . WHILE LPAREN expression RPAREN body
 
-    IDTYPE          reduce using rule 3 (sentence -> declaration .)
-    $end            reduce using rule 3 (sentence -> declaration .)
+  ! shift/reduce conflict for IDTYPE resolved as shift
+  ! shift/reduce conflict for IF resolved as shift
+  ! shift/reduce conflict for FOR resolved as shift
+  ! shift/reduce conflict for WHILE resolved as shift
+    IDTYPE          shift and go to state 12
+    RBRACE          reduce using rule 37 (empty -> .)
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    WHILE           shift and go to state 18
 
+  ! IDTYPE          [ reduce using rule 37 (empty -> .) ]
+  ! IF              [ reduce using rule 37 (empty -> .) ]
+  ! FOR             [ reduce using rule 37 (empty -> .) ]
+  ! WHILE           [ reduce using rule 37 (empty -> .) ]
+
+    all_sentences                  shift and go to state 5
+    list_sentences                 shift and go to state 6
+    sentence                       shift and go to state 7
+    declaration                    shift and go to state 8
+    assign                         shift and go to state 9
+    function_dec                   shift and go to state 10
+    empty                          shift and go to state 11
+    function_iter                  shift and go to state 13
+    function_cond                  shift and go to state 14
+    iteration_statement            shift and go to state 15
 
 state 5
 
-    (4) sentence -> assign .
+    (2) body -> LBRACE all_sentences . RBRACE
 
-    IDTYPE          reduce using rule 4 (sentence -> assign .)
-    $end            reduce using rule 4 (sentence -> assign .)
+    RBRACE          shift and go to state 19
 
 
 state 6
 
-    (5) declaration -> IDTYPE . ID SEMI
-    (11) assign -> IDTYPE . ID EQUAL tvariable SEMI
+    (3) all_sentences -> list_sentences . sentence
+    (5) sentence -> . declaration
+    (6) sentence -> . assign
+    (7) sentence -> . function_dec
+    (8) sentence -> . empty
+    (9) declaration -> . IDTYPE ID SEMI
+    (36) assign -> . IDTYPE ID EQUAL tvariable SEMI
+    (27) function_dec -> . function_iter function_dec
+    (28) function_dec -> . function_cond function_dec
+    (29) function_dec -> . empty
+    (37) empty -> .
+    (24) function_iter -> . iteration_statement
+    (22) function_cond -> . IF LPAREN expression RPAREN body
+    (23) function_cond -> . IF LPAREN expression RPAREN body ELSE body
+    (25) iteration_statement -> . FOR LPAREN ID COLON ID RPAREN body
+    (26) iteration_statement -> . WHILE LPAREN expression RPAREN body
 
-    ID              shift and go to state 8
+    IDTYPE          shift and go to state 12
+    RBRACE          reduce using rule 37 (empty -> .)
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    WHILE           shift and go to state 18
 
+    sentence                       shift and go to state 20
+    declaration                    shift and go to state 8
+    assign                         shift and go to state 9
+    function_dec                   shift and go to state 10
+    empty                          shift and go to state 11
+    function_iter                  shift and go to state 13
+    function_cond                  shift and go to state 14
+    iteration_statement            shift and go to state 15
 
 state 7
 
-    (1) all_sentences -> list_sentences sentence .
+    (4) list_sentences -> sentence .
 
-    $end            reduce using rule 1 (all_sentences -> list_sentences sentence .)
+    IDTYPE          reduce using rule 4 (list_sentences -> sentence .)
+    IF              reduce using rule 4 (list_sentences -> sentence .)
+    FOR             reduce using rule 4 (list_sentences -> sentence .)
+    WHILE           reduce using rule 4 (list_sentences -> sentence .)
+    RBRACE          reduce using rule 4 (list_sentences -> sentence .)
 
 
 state 8
 
-    (5) declaration -> IDTYPE ID . SEMI
-    (11) assign -> IDTYPE ID . EQUAL tvariable SEMI
+    (5) sentence -> declaration .
 
-    SEMI            shift and go to state 9
-    EQUAL           shift and go to state 10
+    IDTYPE          reduce using rule 5 (sentence -> declaration .)
+    IF              reduce using rule 5 (sentence -> declaration .)
+    FOR             reduce using rule 5 (sentence -> declaration .)
+    WHILE           reduce using rule 5 (sentence -> declaration .)
+    RBRACE          reduce using rule 5 (sentence -> declaration .)
 
 
 state 9
 
-    (5) declaration -> IDTYPE ID SEMI .
+    (6) sentence -> assign .
 
-    IDTYPE          reduce using rule 5 (declaration -> IDTYPE ID SEMI .)
-    $end            reduce using rule 5 (declaration -> IDTYPE ID SEMI .)
+    IDTYPE          reduce using rule 6 (sentence -> assign .)
+    IF              reduce using rule 6 (sentence -> assign .)
+    FOR             reduce using rule 6 (sentence -> assign .)
+    WHILE           reduce using rule 6 (sentence -> assign .)
+    RBRACE          reduce using rule 6 (sentence -> assign .)
 
 
 state 10
 
-    (11) assign -> IDTYPE ID EQUAL . tvariable SEMI
-    (6) tvariable -> . STRING
-    (7) tvariable -> . ID
-    (8) tvariable -> . INTEGER
-    (9) tvariable -> . FLOAT
-    (10) tvariable -> . CHARACTER
+    (7) sentence -> function_dec .
 
-    STRING          shift and go to state 13
-    ID              shift and go to state 11
-    INTEGER         shift and go to state 14
-    FLOAT           shift and go to state 15
-    CHARACTER       shift and go to state 16
+    IDTYPE          reduce using rule 7 (sentence -> function_dec .)
+    IF              reduce using rule 7 (sentence -> function_dec .)
+    FOR             reduce using rule 7 (sentence -> function_dec .)
+    WHILE           reduce using rule 7 (sentence -> function_dec .)
+    RBRACE          reduce using rule 7 (sentence -> function_dec .)
 
-    tvariable                      shift and go to state 12
 
 state 11
 
-    (7) tvariable -> ID .
+    (8) sentence -> empty .
+    (29) function_dec -> empty .
 
-    SEMI            reduce using rule 7 (tvariable -> ID .)
+  ! reduce/reduce conflict for IDTYPE resolved using rule 8 (sentence -> empty .)
+  ! reduce/reduce conflict for IF resolved using rule 8 (sentence -> empty .)
+  ! reduce/reduce conflict for FOR resolved using rule 8 (sentence -> empty .)
+  ! reduce/reduce conflict for WHILE resolved using rule 8 (sentence -> empty .)
+  ! reduce/reduce conflict for RBRACE resolved using rule 8 (sentence -> empty .)
+    IDTYPE          reduce using rule 8 (sentence -> empty .)
+    IF              reduce using rule 8 (sentence -> empty .)
+    FOR             reduce using rule 8 (sentence -> empty .)
+    WHILE           reduce using rule 8 (sentence -> empty .)
+    RBRACE          reduce using rule 8 (sentence -> empty .)
+
+  ! IDTYPE          [ reduce using rule 29 (function_dec -> empty .) ]
+  ! IF              [ reduce using rule 29 (function_dec -> empty .) ]
+  ! FOR             [ reduce using rule 29 (function_dec -> empty .) ]
+  ! WHILE           [ reduce using rule 29 (function_dec -> empty .) ]
+  ! RBRACE          [ reduce using rule 29 (function_dec -> empty .) ]
 
 
 state 12
 
-    (11) assign -> IDTYPE ID EQUAL tvariable . SEMI
+    (9) declaration -> IDTYPE . ID SEMI
+    (36) assign -> IDTYPE . ID EQUAL tvariable SEMI
 
-    SEMI            shift and go to state 17
+    ID              shift and go to state 21
 
 
 state 13
 
-    (6) tvariable -> STRING .
+    (27) function_dec -> function_iter . function_dec
+    (27) function_dec -> . function_iter function_dec
+    (28) function_dec -> . function_cond function_dec
+    (29) function_dec -> . empty
+    (24) function_iter -> . iteration_statement
+    (22) function_cond -> . IF LPAREN expression RPAREN body
+    (23) function_cond -> . IF LPAREN expression RPAREN body ELSE body
+    (37) empty -> .
+    (25) iteration_statement -> . FOR LPAREN ID COLON ID RPAREN body
+    (26) iteration_statement -> . WHILE LPAREN expression RPAREN body
 
-    SEMI            reduce using rule 6 (tvariable -> STRING .)
+  ! shift/reduce conflict for IF resolved as shift
+  ! shift/reduce conflict for FOR resolved as shift
+  ! shift/reduce conflict for WHILE resolved as shift
+    IF              shift and go to state 16
+    IDTYPE          reduce using rule 37 (empty -> .)
+    RBRACE          reduce using rule 37 (empty -> .)
+    FOR             shift and go to state 17
+    WHILE           shift and go to state 18
 
+  ! IF              [ reduce using rule 37 (empty -> .) ]
+  ! FOR             [ reduce using rule 37 (empty -> .) ]
+  ! WHILE           [ reduce using rule 37 (empty -> .) ]
+
+    function_iter                  shift and go to state 13
+    function_dec                   shift and go to state 22
+    function_cond                  shift and go to state 14
+    empty                          shift and go to state 23
+    iteration_statement            shift and go to state 15
 
 state 14
 
-    (8) tvariable -> INTEGER .
+    (28) function_dec -> function_cond . function_dec
+    (27) function_dec -> . function_iter function_dec
+    (28) function_dec -> . function_cond function_dec
+    (29) function_dec -> . empty
+    (24) function_iter -> . iteration_statement
+    (22) function_cond -> . IF LPAREN expression RPAREN body
+    (23) function_cond -> . IF LPAREN expression RPAREN body ELSE body
+    (37) empty -> .
+    (25) iteration_statement -> . FOR LPAREN ID COLON ID RPAREN body
+    (26) iteration_statement -> . WHILE LPAREN expression RPAREN body
 
-    SEMI            reduce using rule 8 (tvariable -> INTEGER .)
+  ! shift/reduce conflict for IF resolved as shift
+  ! shift/reduce conflict for FOR resolved as shift
+  ! shift/reduce conflict for WHILE resolved as shift
+    IF              shift and go to state 16
+    IDTYPE          reduce using rule 37 (empty -> .)
+    RBRACE          reduce using rule 37 (empty -> .)
+    FOR             shift and go to state 17
+    WHILE           shift and go to state 18
 
+  ! IF              [ reduce using rule 37 (empty -> .) ]
+  ! FOR             [ reduce using rule 37 (empty -> .) ]
+  ! WHILE           [ reduce using rule 37 (empty -> .) ]
+
+    function_cond                  shift and go to state 14
+    function_dec                   shift and go to state 24
+    function_iter                  shift and go to state 13
+    empty                          shift and go to state 23
+    iteration_statement            shift and go to state 15
 
 state 15
 
-    (9) tvariable -> FLOAT .
+    (24) function_iter -> iteration_statement .
 
-    SEMI            reduce using rule 9 (tvariable -> FLOAT .)
+    IF              reduce using rule 24 (function_iter -> iteration_statement .)
+    FOR             reduce using rule 24 (function_iter -> iteration_statement .)
+    WHILE           reduce using rule 24 (function_iter -> iteration_statement .)
+    IDTYPE          reduce using rule 24 (function_iter -> iteration_statement .)
+    RBRACE          reduce using rule 24 (function_iter -> iteration_statement .)
 
 
 state 16
 
-    (10) tvariable -> CHARACTER .
+    (22) function_cond -> IF . LPAREN expression RPAREN body
+    (23) function_cond -> IF . LPAREN expression RPAREN body ELSE body
 
-    SEMI            reduce using rule 10 (tvariable -> CHARACTER .)
+    LPAREN          shift and go to state 25
 
 
 state 17
 
-    (11) assign -> IDTYPE ID EQUAL tvariable SEMI .
+    (25) iteration_statement -> FOR . LPAREN ID COLON ID RPAREN body
 
-    IDTYPE          reduce using rule 11 (assign -> IDTYPE ID EQUAL tvariable SEMI .)
-    $end            reduce using rule 11 (assign -> IDTYPE ID EQUAL tvariable SEMI .)
+    LPAREN          shift and go to state 26
 
+
+state 18
+
+    (26) iteration_statement -> WHILE . LPAREN expression RPAREN body
+
+    LPAREN          shift and go to state 27
+
+
+state 19
+
+    (2) body -> LBRACE all_sentences RBRACE .
+
+    $end            reduce using rule 2 (body -> LBRACE all_sentences RBRACE .)
+    ELSE            reduce using rule 2 (body -> LBRACE all_sentences RBRACE .)
+    IF              reduce using rule 2 (body -> LBRACE all_sentences RBRACE .)
+    FOR             reduce using rule 2 (body -> LBRACE all_sentences RBRACE .)
+    WHILE           reduce using rule 2 (body -> LBRACE all_sentences RBRACE .)
+    IDTYPE          reduce using rule 2 (body -> LBRACE all_sentences RBRACE .)
+    RBRACE          reduce using rule 2 (body -> LBRACE all_sentences RBRACE .)
+
+
+state 20
+
+    (3) all_sentences -> list_sentences sentence .
+
+    RBRACE          reduce using rule 3 (all_sentences -> list_sentences sentence .)
+
+
+state 21
+
+    (9) declaration -> IDTYPE ID . SEMI
+    (36) assign -> IDTYPE ID . EQUAL tvariable SEMI
+
+    SEMI            shift and go to state 28
+    EQUAL           shift and go to state 29
+
+
+state 22
+
+    (27) function_dec -> function_iter function_dec .
+
+    IDTYPE          reduce using rule 27 (function_dec -> function_iter function_dec .)
+    IF              reduce using rule 27 (function_dec -> function_iter function_dec .)
+    FOR             reduce using rule 27 (function_dec -> function_iter function_dec .)
+    WHILE           reduce using rule 27 (function_dec -> function_iter function_dec .)
+    RBRACE          reduce using rule 27 (function_dec -> function_iter function_dec .)
+
+
+state 23
+
+    (29) function_dec -> empty .
+
+    IDTYPE          reduce using rule 29 (function_dec -> empty .)
+    IF              reduce using rule 29 (function_dec -> empty .)
+    FOR             reduce using rule 29 (function_dec -> empty .)
+    WHILE           reduce using rule 29 (function_dec -> empty .)
+    RBRACE          reduce using rule 29 (function_dec -> empty .)
+
+
+state 24
+
+    (28) function_dec -> function_cond function_dec .
+
+    IDTYPE          reduce using rule 28 (function_dec -> function_cond function_dec .)
+    IF              reduce using rule 28 (function_dec -> function_cond function_dec .)
+    FOR             reduce using rule 28 (function_dec -> function_cond function_dec .)
+    WHILE           reduce using rule 28 (function_dec -> function_cond function_dec .)
+    RBRACE          reduce using rule 28 (function_dec -> function_cond function_dec .)
+
+
+state 25
+
+    (22) function_cond -> IF LPAREN . expression RPAREN body
+    (23) function_cond -> IF LPAREN . expression RPAREN body ELSE body
+    (21) expression -> . tvariable operator tvariable
+    (30) tvariable -> . STRING
+    (31) tvariable -> . ID
+    (32) tvariable -> . INTEGER
+    (33) tvariable -> . FLOAT
+    (34) tvariable -> . CHARACTER
+    (35) tvariable -> . boolean
+    (10) boolean -> . TRUE
+    (11) boolean -> . FALSE
+
+    STRING          shift and go to state 32
+    ID              shift and go to state 33
+    INTEGER         shift and go to state 34
+    FLOAT           shift and go to state 35
+    CHARACTER       shift and go to state 36
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expression                     shift and go to state 30
+    tvariable                      shift and go to state 31
+    boolean                        shift and go to state 37
+
+state 26
+
+    (25) iteration_statement -> FOR LPAREN . ID COLON ID RPAREN body
+
+    ID              shift and go to state 40
+
+
+state 27
+
+    (26) iteration_statement -> WHILE LPAREN . expression RPAREN body
+    (21) expression -> . tvariable operator tvariable
+    (30) tvariable -> . STRING
+    (31) tvariable -> . ID
+    (32) tvariable -> . INTEGER
+    (33) tvariable -> . FLOAT
+    (34) tvariable -> . CHARACTER
+    (35) tvariable -> . boolean
+    (10) boolean -> . TRUE
+    (11) boolean -> . FALSE
+
+    STRING          shift and go to state 32
+    ID              shift and go to state 33
+    INTEGER         shift and go to state 34
+    FLOAT           shift and go to state 35
+    CHARACTER       shift and go to state 36
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expression                     shift and go to state 41
+    tvariable                      shift and go to state 31
+    boolean                        shift and go to state 37
+
+state 28
+
+    (9) declaration -> IDTYPE ID SEMI .
+
+    IDTYPE          reduce using rule 9 (declaration -> IDTYPE ID SEMI .)
+    IF              reduce using rule 9 (declaration -> IDTYPE ID SEMI .)
+    FOR             reduce using rule 9 (declaration -> IDTYPE ID SEMI .)
+    WHILE           reduce using rule 9 (declaration -> IDTYPE ID SEMI .)
+    RBRACE          reduce using rule 9 (declaration -> IDTYPE ID SEMI .)
+
+
+state 29
+
+    (36) assign -> IDTYPE ID EQUAL . tvariable SEMI
+    (30) tvariable -> . STRING
+    (31) tvariable -> . ID
+    (32) tvariable -> . INTEGER
+    (33) tvariable -> . FLOAT
+    (34) tvariable -> . CHARACTER
+    (35) tvariable -> . boolean
+    (10) boolean -> . TRUE
+    (11) boolean -> . FALSE
+
+    STRING          shift and go to state 32
+    ID              shift and go to state 33
+    INTEGER         shift and go to state 34
+    FLOAT           shift and go to state 35
+    CHARACTER       shift and go to state 36
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    tvariable                      shift and go to state 42
+    boolean                        shift and go to state 37
+
+state 30
+
+    (22) function_cond -> IF LPAREN expression . RPAREN body
+    (23) function_cond -> IF LPAREN expression . RPAREN body ELSE body
+
+    RPAREN          shift and go to state 43
+
+
+state 31
+
+    (21) expression -> tvariable . operator tvariable
+    (12) operator -> . LOR
+    (13) operator -> . LAND
+    (14) operator -> . LNOT
+    (15) operator -> . LT
+    (16) operator -> . GT
+    (17) operator -> . LE
+    (18) operator -> . GE
+    (19) operator -> . EQ
+    (20) operator -> . NE
+
+    LOR             shift and go to state 45
+    LAND            shift and go to state 46
+    LNOT            shift and go to state 47
+    LT              shift and go to state 48
+    GT              shift and go to state 49
+    LE              shift and go to state 50
+    GE              shift and go to state 51
+    EQ              shift and go to state 52
+    NE              shift and go to state 53
+
+    operator                       shift and go to state 44
+
+state 32
+
+    (30) tvariable -> STRING .
+
+    LOR             reduce using rule 30 (tvariable -> STRING .)
+    LAND            reduce using rule 30 (tvariable -> STRING .)
+    LNOT            reduce using rule 30 (tvariable -> STRING .)
+    LT              reduce using rule 30 (tvariable -> STRING .)
+    GT              reduce using rule 30 (tvariable -> STRING .)
+    LE              reduce using rule 30 (tvariable -> STRING .)
+    GE              reduce using rule 30 (tvariable -> STRING .)
+    EQ              reduce using rule 30 (tvariable -> STRING .)
+    NE              reduce using rule 30 (tvariable -> STRING .)
+    SEMI            reduce using rule 30 (tvariable -> STRING .)
+    RPAREN          reduce using rule 30 (tvariable -> STRING .)
+
+
+state 33
+
+    (31) tvariable -> ID .
+
+    LOR             reduce using rule 31 (tvariable -> ID .)
+    LAND            reduce using rule 31 (tvariable -> ID .)
+    LNOT            reduce using rule 31 (tvariable -> ID .)
+    LT              reduce using rule 31 (tvariable -> ID .)
+    GT              reduce using rule 31 (tvariable -> ID .)
+    LE              reduce using rule 31 (tvariable -> ID .)
+    GE              reduce using rule 31 (tvariable -> ID .)
+    EQ              reduce using rule 31 (tvariable -> ID .)
+    NE              reduce using rule 31 (tvariable -> ID .)
+    SEMI            reduce using rule 31 (tvariable -> ID .)
+    RPAREN          reduce using rule 31 (tvariable -> ID .)
+
+
+state 34
+
+    (32) tvariable -> INTEGER .
+
+    LOR             reduce using rule 32 (tvariable -> INTEGER .)
+    LAND            reduce using rule 32 (tvariable -> INTEGER .)
+    LNOT            reduce using rule 32 (tvariable -> INTEGER .)
+    LT              reduce using rule 32 (tvariable -> INTEGER .)
+    GT              reduce using rule 32 (tvariable -> INTEGER .)
+    LE              reduce using rule 32 (tvariable -> INTEGER .)
+    GE              reduce using rule 32 (tvariable -> INTEGER .)
+    EQ              reduce using rule 32 (tvariable -> INTEGER .)
+    NE              reduce using rule 32 (tvariable -> INTEGER .)
+    SEMI            reduce using rule 32 (tvariable -> INTEGER .)
+    RPAREN          reduce using rule 32 (tvariable -> INTEGER .)
+
+
+state 35
+
+    (33) tvariable -> FLOAT .
+
+    LOR             reduce using rule 33 (tvariable -> FLOAT .)
+    LAND            reduce using rule 33 (tvariable -> FLOAT .)
+    LNOT            reduce using rule 33 (tvariable -> FLOAT .)
+    LT              reduce using rule 33 (tvariable -> FLOAT .)
+    GT              reduce using rule 33 (tvariable -> FLOAT .)
+    LE              reduce using rule 33 (tvariable -> FLOAT .)
+    GE              reduce using rule 33 (tvariable -> FLOAT .)
+    EQ              reduce using rule 33 (tvariable -> FLOAT .)
+    NE              reduce using rule 33 (tvariable -> FLOAT .)
+    SEMI            reduce using rule 33 (tvariable -> FLOAT .)
+    RPAREN          reduce using rule 33 (tvariable -> FLOAT .)
+
+
+state 36
+
+    (34) tvariable -> CHARACTER .
+
+    LOR             reduce using rule 34 (tvariable -> CHARACTER .)
+    LAND            reduce using rule 34 (tvariable -> CHARACTER .)
+    LNOT            reduce using rule 34 (tvariable -> CHARACTER .)
+    LT              reduce using rule 34 (tvariable -> CHARACTER .)
+    GT              reduce using rule 34 (tvariable -> CHARACTER .)
+    LE              reduce using rule 34 (tvariable -> CHARACTER .)
+    GE              reduce using rule 34 (tvariable -> CHARACTER .)
+    EQ              reduce using rule 34 (tvariable -> CHARACTER .)
+    NE              reduce using rule 34 (tvariable -> CHARACTER .)
+    SEMI            reduce using rule 34 (tvariable -> CHARACTER .)
+    RPAREN          reduce using rule 34 (tvariable -> CHARACTER .)
+
+
+state 37
+
+    (35) tvariable -> boolean .
+
+    LOR             reduce using rule 35 (tvariable -> boolean .)
+    LAND            reduce using rule 35 (tvariable -> boolean .)
+    LNOT            reduce using rule 35 (tvariable -> boolean .)
+    LT              reduce using rule 35 (tvariable -> boolean .)
+    GT              reduce using rule 35 (tvariable -> boolean .)
+    LE              reduce using rule 35 (tvariable -> boolean .)
+    GE              reduce using rule 35 (tvariable -> boolean .)
+    EQ              reduce using rule 35 (tvariable -> boolean .)
+    NE              reduce using rule 35 (tvariable -> boolean .)
+    SEMI            reduce using rule 35 (tvariable -> boolean .)
+    RPAREN          reduce using rule 35 (tvariable -> boolean .)
+
+
+state 38
+
+    (10) boolean -> TRUE .
+
+    LOR             reduce using rule 10 (boolean -> TRUE .)
+    LAND            reduce using rule 10 (boolean -> TRUE .)
+    LNOT            reduce using rule 10 (boolean -> TRUE .)
+    LT              reduce using rule 10 (boolean -> TRUE .)
+    GT              reduce using rule 10 (boolean -> TRUE .)
+    LE              reduce using rule 10 (boolean -> TRUE .)
+    GE              reduce using rule 10 (boolean -> TRUE .)
+    EQ              reduce using rule 10 (boolean -> TRUE .)
+    NE              reduce using rule 10 (boolean -> TRUE .)
+    SEMI            reduce using rule 10 (boolean -> TRUE .)
+    RPAREN          reduce using rule 10 (boolean -> TRUE .)
+
+
+state 39
+
+    (11) boolean -> FALSE .
+
+    LOR             reduce using rule 11 (boolean -> FALSE .)
+    LAND            reduce using rule 11 (boolean -> FALSE .)
+    LNOT            reduce using rule 11 (boolean -> FALSE .)
+    LT              reduce using rule 11 (boolean -> FALSE .)
+    GT              reduce using rule 11 (boolean -> FALSE .)
+    LE              reduce using rule 11 (boolean -> FALSE .)
+    GE              reduce using rule 11 (boolean -> FALSE .)
+    EQ              reduce using rule 11 (boolean -> FALSE .)
+    NE              reduce using rule 11 (boolean -> FALSE .)
+    SEMI            reduce using rule 11 (boolean -> FALSE .)
+    RPAREN          reduce using rule 11 (boolean -> FALSE .)
+
+
+state 40
+
+    (25) iteration_statement -> FOR LPAREN ID . COLON ID RPAREN body
+
+    COLON           shift and go to state 54
+
+
+state 41
+
+    (26) iteration_statement -> WHILE LPAREN expression . RPAREN body
+
+    RPAREN          shift and go to state 55
+
+
+state 42
+
+    (36) assign -> IDTYPE ID EQUAL tvariable . SEMI
+
+    SEMI            shift and go to state 56
+
+
+state 43
+
+    (22) function_cond -> IF LPAREN expression RPAREN . body
+    (23) function_cond -> IF LPAREN expression RPAREN . body ELSE body
+    (2) body -> . LBRACE all_sentences RBRACE
+
+    LBRACE          shift and go to state 4
+
+    body                           shift and go to state 57
+
+state 44
+
+    (21) expression -> tvariable operator . tvariable
+    (30) tvariable -> . STRING
+    (31) tvariable -> . ID
+    (32) tvariable -> . INTEGER
+    (33) tvariable -> . FLOAT
+    (34) tvariable -> . CHARACTER
+    (35) tvariable -> . boolean
+    (10) boolean -> . TRUE
+    (11) boolean -> . FALSE
+
+    STRING          shift and go to state 32
+    ID              shift and go to state 33
+    INTEGER         shift and go to state 34
+    FLOAT           shift and go to state 35
+    CHARACTER       shift and go to state 36
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    tvariable                      shift and go to state 58
+    boolean                        shift and go to state 37
+
+state 45
+
+    (12) operator -> LOR .
+
+    STRING          reduce using rule 12 (operator -> LOR .)
+    ID              reduce using rule 12 (operator -> LOR .)
+    INTEGER         reduce using rule 12 (operator -> LOR .)
+    FLOAT           reduce using rule 12 (operator -> LOR .)
+    CHARACTER       reduce using rule 12 (operator -> LOR .)
+    TRUE            reduce using rule 12 (operator -> LOR .)
+    FALSE           reduce using rule 12 (operator -> LOR .)
+
+
+state 46
+
+    (13) operator -> LAND .
+
+    STRING          reduce using rule 13 (operator -> LAND .)
+    ID              reduce using rule 13 (operator -> LAND .)
+    INTEGER         reduce using rule 13 (operator -> LAND .)
+    FLOAT           reduce using rule 13 (operator -> LAND .)
+    CHARACTER       reduce using rule 13 (operator -> LAND .)
+    TRUE            reduce using rule 13 (operator -> LAND .)
+    FALSE           reduce using rule 13 (operator -> LAND .)
+
+
+state 47
+
+    (14) operator -> LNOT .
+
+    STRING          reduce using rule 14 (operator -> LNOT .)
+    ID              reduce using rule 14 (operator -> LNOT .)
+    INTEGER         reduce using rule 14 (operator -> LNOT .)
+    FLOAT           reduce using rule 14 (operator -> LNOT .)
+    CHARACTER       reduce using rule 14 (operator -> LNOT .)
+    TRUE            reduce using rule 14 (operator -> LNOT .)
+    FALSE           reduce using rule 14 (operator -> LNOT .)
+
+
+state 48
+
+    (15) operator -> LT .
+
+    STRING          reduce using rule 15 (operator -> LT .)
+    ID              reduce using rule 15 (operator -> LT .)
+    INTEGER         reduce using rule 15 (operator -> LT .)
+    FLOAT           reduce using rule 15 (operator -> LT .)
+    CHARACTER       reduce using rule 15 (operator -> LT .)
+    TRUE            reduce using rule 15 (operator -> LT .)
+    FALSE           reduce using rule 15 (operator -> LT .)
+
+
+state 49
+
+    (16) operator -> GT .
+
+    STRING          reduce using rule 16 (operator -> GT .)
+    ID              reduce using rule 16 (operator -> GT .)
+    INTEGER         reduce using rule 16 (operator -> GT .)
+    FLOAT           reduce using rule 16 (operator -> GT .)
+    CHARACTER       reduce using rule 16 (operator -> GT .)
+    TRUE            reduce using rule 16 (operator -> GT .)
+    FALSE           reduce using rule 16 (operator -> GT .)
+
+
+state 50
+
+    (17) operator -> LE .
+
+    STRING          reduce using rule 17 (operator -> LE .)
+    ID              reduce using rule 17 (operator -> LE .)
+    INTEGER         reduce using rule 17 (operator -> LE .)
+    FLOAT           reduce using rule 17 (operator -> LE .)
+    CHARACTER       reduce using rule 17 (operator -> LE .)
+    TRUE            reduce using rule 17 (operator -> LE .)
+    FALSE           reduce using rule 17 (operator -> LE .)
+
+
+state 51
+
+    (18) operator -> GE .
+
+    STRING          reduce using rule 18 (operator -> GE .)
+    ID              reduce using rule 18 (operator -> GE .)
+    INTEGER         reduce using rule 18 (operator -> GE .)
+    FLOAT           reduce using rule 18 (operator -> GE .)
+    CHARACTER       reduce using rule 18 (operator -> GE .)
+    TRUE            reduce using rule 18 (operator -> GE .)
+    FALSE           reduce using rule 18 (operator -> GE .)
+
+
+state 52
+
+    (19) operator -> EQ .
+
+    STRING          reduce using rule 19 (operator -> EQ .)
+    ID              reduce using rule 19 (operator -> EQ .)
+    INTEGER         reduce using rule 19 (operator -> EQ .)
+    FLOAT           reduce using rule 19 (operator -> EQ .)
+    CHARACTER       reduce using rule 19 (operator -> EQ .)
+    TRUE            reduce using rule 19 (operator -> EQ .)
+    FALSE           reduce using rule 19 (operator -> EQ .)
+
+
+state 53
+
+    (20) operator -> NE .
+
+    STRING          reduce using rule 20 (operator -> NE .)
+    ID              reduce using rule 20 (operator -> NE .)
+    INTEGER         reduce using rule 20 (operator -> NE .)
+    FLOAT           reduce using rule 20 (operator -> NE .)
+    CHARACTER       reduce using rule 20 (operator -> NE .)
+    TRUE            reduce using rule 20 (operator -> NE .)
+    FALSE           reduce using rule 20 (operator -> NE .)
+
+
+state 54
+
+    (25) iteration_statement -> FOR LPAREN ID COLON . ID RPAREN body
+
+    ID              shift and go to state 59
+
+
+state 55
+
+    (26) iteration_statement -> WHILE LPAREN expression RPAREN . body
+    (2) body -> . LBRACE all_sentences RBRACE
+
+    LBRACE          shift and go to state 4
+
+    body                           shift and go to state 60
+
+state 56
+
+    (36) assign -> IDTYPE ID EQUAL tvariable SEMI .
+
+    IDTYPE          reduce using rule 36 (assign -> IDTYPE ID EQUAL tvariable SEMI .)
+    IF              reduce using rule 36 (assign -> IDTYPE ID EQUAL tvariable SEMI .)
+    FOR             reduce using rule 36 (assign -> IDTYPE ID EQUAL tvariable SEMI .)
+    WHILE           reduce using rule 36 (assign -> IDTYPE ID EQUAL tvariable SEMI .)
+    RBRACE          reduce using rule 36 (assign -> IDTYPE ID EQUAL tvariable SEMI .)
+
+
+state 57
+
+    (22) function_cond -> IF LPAREN expression RPAREN body .
+    (23) function_cond -> IF LPAREN expression RPAREN body . ELSE body
+
+    IF              reduce using rule 22 (function_cond -> IF LPAREN expression RPAREN body .)
+    FOR             reduce using rule 22 (function_cond -> IF LPAREN expression RPAREN body .)
+    WHILE           reduce using rule 22 (function_cond -> IF LPAREN expression RPAREN body .)
+    IDTYPE          reduce using rule 22 (function_cond -> IF LPAREN expression RPAREN body .)
+    RBRACE          reduce using rule 22 (function_cond -> IF LPAREN expression RPAREN body .)
+    ELSE            shift and go to state 61
+
+
+state 58
+
+    (21) expression -> tvariable operator tvariable .
+
+    RPAREN          reduce using rule 21 (expression -> tvariable operator tvariable .)
+
+
+state 59
+
+    (25) iteration_statement -> FOR LPAREN ID COLON ID . RPAREN body
+
+    RPAREN          shift and go to state 62
+
+
+state 60
+
+    (26) iteration_statement -> WHILE LPAREN expression RPAREN body .
+
+    IF              reduce using rule 26 (iteration_statement -> WHILE LPAREN expression RPAREN body .)
+    FOR             reduce using rule 26 (iteration_statement -> WHILE LPAREN expression RPAREN body .)
+    WHILE           reduce using rule 26 (iteration_statement -> WHILE LPAREN expression RPAREN body .)
+    IDTYPE          reduce using rule 26 (iteration_statement -> WHILE LPAREN expression RPAREN body .)
+    RBRACE          reduce using rule 26 (iteration_statement -> WHILE LPAREN expression RPAREN body .)
+
+
+state 61
+
+    (23) function_cond -> IF LPAREN expression RPAREN body ELSE . body
+    (2) body -> . LBRACE all_sentences RBRACE
+
+    LBRACE          shift and go to state 4
+
+    body                           shift and go to state 63
+
+state 62
+
+    (25) iteration_statement -> FOR LPAREN ID COLON ID RPAREN . body
+    (2) body -> . LBRACE all_sentences RBRACE
+
+    LBRACE          shift and go to state 4
+
+    body                           shift and go to state 64
+
+state 63
+
+    (23) function_cond -> IF LPAREN expression RPAREN body ELSE body .
+
+    IF              reduce using rule 23 (function_cond -> IF LPAREN expression RPAREN body ELSE body .)
+    FOR             reduce using rule 23 (function_cond -> IF LPAREN expression RPAREN body ELSE body .)
+    WHILE           reduce using rule 23 (function_cond -> IF LPAREN expression RPAREN body ELSE body .)
+    IDTYPE          reduce using rule 23 (function_cond -> IF LPAREN expression RPAREN body ELSE body .)
+    RBRACE          reduce using rule 23 (function_cond -> IF LPAREN expression RPAREN body ELSE body .)
+
+
+state 64
+
+    (25) iteration_statement -> FOR LPAREN ID COLON ID RPAREN body .
+
+    IF              reduce using rule 25 (iteration_statement -> FOR LPAREN ID COLON ID RPAREN body .)
+    FOR             reduce using rule 25 (iteration_statement -> FOR LPAREN ID COLON ID RPAREN body .)
+    WHILE           reduce using rule 25 (iteration_statement -> FOR LPAREN ID COLON ID RPAREN body .)
+    IDTYPE          reduce using rule 25 (iteration_statement -> FOR LPAREN ID COLON ID RPAREN body .)
+    RBRACE          reduce using rule 25 (iteration_statement -> FOR LPAREN ID COLON ID RPAREN body .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for IDTYPE in state 4 resolved as shift
+WARNING: shift/reduce conflict for IF in state 4 resolved as shift
+WARNING: shift/reduce conflict for FOR in state 4 resolved as shift
+WARNING: shift/reduce conflict for WHILE in state 4 resolved as shift
+WARNING: shift/reduce conflict for IF in state 13 resolved as shift
+WARNING: shift/reduce conflict for FOR in state 13 resolved as shift
+WARNING: shift/reduce conflict for WHILE in state 13 resolved as shift
+WARNING: shift/reduce conflict for IF in state 14 resolved as shift
+WARNING: shift/reduce conflict for FOR in state 14 resolved as shift
+WARNING: shift/reduce conflict for WHILE in state 14 resolved as shift
+WARNING: reduce/reduce conflict in state 11 resolved using rule (sentence -> empty)
+WARNING: rejected rule (function_dec -> empty) in state 11

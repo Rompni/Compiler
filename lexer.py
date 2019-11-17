@@ -12,15 +12,19 @@ tokens = (
     # Assignment
     'EQUAL',
     # Delimeters ( ) [ ] { } , . ;
-    'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE', 'COMMA', 'PERIOD', 'SEMI'
+    'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE', 'COMMA', 'PERIOD', 'SEMI', 'COLON'
 
 )
 
 reserved = (
+    'INIT',
+    'END',
     'IF',
     'ELSE',
     'WHILE',
     'FOR',
+    'TRUE',
+    'FALSE'
 )
 tokens = tokens + reserved
 
@@ -59,14 +63,33 @@ t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_COMMA = r','
 t_PERIOD = r'\.'
-t_SEMI = ';'
+t_SEMI = r';'
+t_COLON = r':'
 
+#
 t_ID = r'\$[A-Za-z_][A-Za-z0-9_]*'
 t_INTEGER = r'\d+([uU]|[lL]|[uU][lL]|[lL][uU])?'
 t_FLOAT = r'((\d+)(\.\d+)(e(\+|-)?(\d+))? | (\d+)e(\+|-)?(\d+))([lL]|[fF])?'
 t_STRING = r'\"([^\\\n]|(\\.))*?\"'
 t_CHARACTER = r'(L)?\'([^\\\n]|(\\.))*?\''
-t_IDTYPE = 'let'
+t_IDTYPE = r'let'
+
+# Reserved
+t_INIT = r'INIT'
+t_END = r'END'
+t_IF = r'IF'
+t_ELSE = r'ELSE'
+t_WHILE = r'WHILE'
+t_FOR = r'FOR'
+t_TRUE = r'TRUE'
+t_FALSE = r'FALSE'
+
+
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
+    return t
+
 
 t_ignore = ' \t'
 

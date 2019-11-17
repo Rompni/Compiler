@@ -1,5 +1,6 @@
 from tkinter import *
-from tkinter.filedialog import asksaveasfilename, askopenfilename
+from tkinter import filedialog, messagebox
+import parser as compiler
 
 
 # Creo la clase editor
@@ -22,7 +23,7 @@ class PyRompniNotePad:
         MENUayuda = Menu(menubar)
         MENUayuda.add_command(label="Sobre", command=self.sobre)
         menubar.add_cascade(label="Ayuda", menu=MENUayuda)
-        menubar.add_cascade(label="Compilar")
+        menubar.add_cascade(label="Compilar", command=self.compilar)
         self.root.config(menu=menubar)
 
         # Editor de texto
@@ -33,35 +34,49 @@ class PyRompniNotePad:
         self.text.config(yscrollcommand=scrollbar.set)
         scrollbar.config(command=self.text.yview)
 
+        self.ruta = "none"
         # ventanirris
         self.root.mainloop()
 
-    def guardar(self):  # Guardar archivo
-        fileName = asksaveasfilename()
-        try:
-            file = open(fileName, 'w')
-            textoutput = self.text.get(0.0, END)
-            file.write(textoutput)
-        except:
-            pass
-        finally:
-            file.close()
+    def guardar(self):
+        if (self.ruta != "none"):
+            f = open(self.ruta, 'w')
+            f.write(self.text.get("1.0", END))
+            f.close()
+        else:
+            self.ruta = filedialog.asksaveasfilename(initialdir="/", title="Select file",
+                                                     filetypes=(("Rompni files", "*.romp"), ("all files", "*.*")))
+            aux = self.ruta + ".romp"
+            f = open(aux, 'w')
+            f.write(self.text.get("1.0", END))
+            f.close()
 
-    def abrir(self):  # Cargar archivo
-        fileName = askopenfilename()
-        try:
-            file = open(fileName, 'r')
-            contents = file.read()
+    def abrir(self):
+        self.text.delete("1.0", END)
+        self.ruta = filedialog.askopenfilename(initialdir="/", title="Select file",
+                                               filetypes=(("Rompni files", "*.romp"), ("all files", "*.*")))
+        f = open(self.ruta, 'r')
+        data = f.read()
+        self.text.insert(INSERT, data)
+        f.close()
 
-            self.text.delete(0.0, END)
-            self.text.insert(0.0, contents)
+    def compilar(self):
+        datos = self.text.get("1.0", END)
+        #compiler.ERROR = 0
+        try:
+            print(self.text.get("1.0", END))
+            compiler.parser.parse(datos, tracking=True)
+            print('[ok]')
+            messagebox.showinfo(message="Compilado", title="resultado")
+
         except:
-            pass
+            print('[error]')
+            messagebox.showerror(message="error sintaxis", title="resultado")
 
     def sobre(self):
         root = Tk()
         root.wm_title("Sobre")
-        texto = ("PyRompniNotePad: Version 1.0")
+        texto = "PyRompniNotePad: Version 1.0"
         textONlabel = Label(root, text=texto)
         textONlabel.pack()
 
