@@ -1,0 +1,266 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    AND
+    COMMA
+    DIVIDE
+    ELSE
+    EQ
+    FOR
+    GE
+    GT
+    IF
+    LAND
+    LBRACE
+    LBRACKET
+    LE
+    LNOT
+    LOR
+    LPAREN
+    LSHIFT
+    LT
+    MINUS
+    MODULO
+    NE
+    NOT
+    OR
+    PERIOD
+    PLUS
+    RBRACE
+    RBRACKET
+    RPAREN
+    RSHIFT
+    TIMES
+    WHILE
+    XOR
+
+Grammar
+
+Rule 0     S' -> all_sentences
+Rule 1     all_sentences -> list_sentences sentence
+Rule 2     list_sentences -> sentence
+Rule 3     sentence -> declaration
+Rule 4     sentence -> assign
+Rule 5     declaration -> IDTYPE ID SEMI
+Rule 6     tvariable -> STRING
+Rule 7     tvariable -> ID
+Rule 8     tvariable -> INTEGER
+Rule 9     tvariable -> FLOAT
+Rule 10    tvariable -> CHARACTER
+Rule 11    assign -> IDTYPE ID EQUAL tvariable SEMI
+
+Terminals, with rules where they appear
+
+AND                  : 
+CHARACTER            : 10
+COMMA                : 
+DIVIDE               : 
+ELSE                 : 
+EQ                   : 
+EQUAL                : 11
+FLOAT                : 9
+FOR                  : 
+GE                   : 
+GT                   : 
+ID                   : 5 7 11
+IDTYPE               : 5 11
+IF                   : 
+INTEGER              : 8
+LAND                 : 
+LBRACE               : 
+LBRACKET             : 
+LE                   : 
+LNOT                 : 
+LOR                  : 
+LPAREN               : 
+LSHIFT               : 
+LT                   : 
+MINUS                : 
+MODULO               : 
+NE                   : 
+NOT                  : 
+OR                   : 
+PERIOD               : 
+PLUS                 : 
+RBRACE               : 
+RBRACKET             : 
+RPAREN               : 
+RSHIFT               : 
+SEMI                 : 5 11
+STRING               : 6
+TIMES                : 
+WHILE                : 
+XOR                  : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+all_sentences        : 0
+assign               : 4
+declaration          : 3
+list_sentences       : 1
+sentence             : 1 2
+tvariable            : 11
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . all_sentences
+    (1) all_sentences -> . list_sentences sentence
+    (2) list_sentences -> . sentence
+    (3) sentence -> . declaration
+    (4) sentence -> . assign
+    (5) declaration -> . IDTYPE ID SEMI
+    (11) assign -> . IDTYPE ID EQUAL tvariable SEMI
+
+    IDTYPE          shift and go to state 6
+
+    all_sentences                  shift and go to state 1
+    list_sentences                 shift and go to state 2
+    sentence                       shift and go to state 3
+    declaration                    shift and go to state 4
+    assign                         shift and go to state 5
+
+state 1
+
+    (0) S' -> all_sentences .
+
+
+
+state 2
+
+    (1) all_sentences -> list_sentences . sentence
+    (3) sentence -> . declaration
+    (4) sentence -> . assign
+    (5) declaration -> . IDTYPE ID SEMI
+    (11) assign -> . IDTYPE ID EQUAL tvariable SEMI
+
+    IDTYPE          shift and go to state 6
+
+    sentence                       shift and go to state 7
+    declaration                    shift and go to state 4
+    assign                         shift and go to state 5
+
+state 3
+
+    (2) list_sentences -> sentence .
+
+    IDTYPE          reduce using rule 2 (list_sentences -> sentence .)
+
+
+state 4
+
+    (3) sentence -> declaration .
+
+    IDTYPE          reduce using rule 3 (sentence -> declaration .)
+    $end            reduce using rule 3 (sentence -> declaration .)
+
+
+state 5
+
+    (4) sentence -> assign .
+
+    IDTYPE          reduce using rule 4 (sentence -> assign .)
+    $end            reduce using rule 4 (sentence -> assign .)
+
+
+state 6
+
+    (5) declaration -> IDTYPE . ID SEMI
+    (11) assign -> IDTYPE . ID EQUAL tvariable SEMI
+
+    ID              shift and go to state 8
+
+
+state 7
+
+    (1) all_sentences -> list_sentences sentence .
+
+    $end            reduce using rule 1 (all_sentences -> list_sentences sentence .)
+
+
+state 8
+
+    (5) declaration -> IDTYPE ID . SEMI
+    (11) assign -> IDTYPE ID . EQUAL tvariable SEMI
+
+    SEMI            shift and go to state 9
+    EQUAL           shift and go to state 10
+
+
+state 9
+
+    (5) declaration -> IDTYPE ID SEMI .
+
+    IDTYPE          reduce using rule 5 (declaration -> IDTYPE ID SEMI .)
+    $end            reduce using rule 5 (declaration -> IDTYPE ID SEMI .)
+
+
+state 10
+
+    (11) assign -> IDTYPE ID EQUAL . tvariable SEMI
+    (6) tvariable -> . STRING
+    (7) tvariable -> . ID
+    (8) tvariable -> . INTEGER
+    (9) tvariable -> . FLOAT
+    (10) tvariable -> . CHARACTER
+
+    STRING          shift and go to state 13
+    ID              shift and go to state 11
+    INTEGER         shift and go to state 14
+    FLOAT           shift and go to state 15
+    CHARACTER       shift and go to state 16
+
+    tvariable                      shift and go to state 12
+
+state 11
+
+    (7) tvariable -> ID .
+
+    SEMI            reduce using rule 7 (tvariable -> ID .)
+
+
+state 12
+
+    (11) assign -> IDTYPE ID EQUAL tvariable . SEMI
+
+    SEMI            shift and go to state 17
+
+
+state 13
+
+    (6) tvariable -> STRING .
+
+    SEMI            reduce using rule 6 (tvariable -> STRING .)
+
+
+state 14
+
+    (8) tvariable -> INTEGER .
+
+    SEMI            reduce using rule 8 (tvariable -> INTEGER .)
+
+
+state 15
+
+    (9) tvariable -> FLOAT .
+
+    SEMI            reduce using rule 9 (tvariable -> FLOAT .)
+
+
+state 16
+
+    (10) tvariable -> CHARACTER .
+
+    SEMI            reduce using rule 10 (tvariable -> CHARACTER .)
+
+
+state 17
+
+    (11) assign -> IDTYPE ID EQUAL tvariable SEMI .
+
+    IDTYPE          reduce using rule 11 (assign -> IDTYPE ID EQUAL tvariable SEMI .)
+    $end            reduce using rule 11 (assign -> IDTYPE ID EQUAL tvariable SEMI .)
+
