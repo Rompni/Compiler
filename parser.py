@@ -1,5 +1,4 @@
 import sys
-
 import ply.yacc as yacc
 from lexer import tokens
 import pprint
@@ -18,8 +17,8 @@ def p_body(p):
 
 
 def p_all_sentences(p):
-    """all_sentences : list_sentences sentence
-                    """
+    """all_sentences : all_sentences list_sentences
+                    | sentence"""
 
 
 def p_list_sentences(p):
@@ -55,7 +54,9 @@ def p_operators(p):
 
 
 def p_print_statement(p):
-    """print : PRINT tvariable SEMI"""
+    """print : PRINT tvariable SEMI
+            | PRINT ID SEMI"""
+    print(p.slice)
 
 
 def p_expression(p):
@@ -91,12 +92,11 @@ def p_tvariable(p):
                  | CHARACTER
                  | boolean"""
 
-    print(p.slice[1])
-
 
 def p_assign(p):
-    """assign : IDTYPE ID EQUAL tvariable SEMI"""
-    print("assign", p.slice)
+    """assign : IDTYPE ID EQUAL tvariable SEMI
+                | ID EQUAL tvariable SEMI
+                """
 
 
 def p_empty(p):
@@ -110,11 +110,19 @@ def p_error(p):
             print('line error: ', str(p.lineno))
     else:
         raise Exception(p)
-        #print('Sintax', 'error')
+        # print('Sintax', 'error')
 
 
 parser = yacc.yacc()
 pp = pprint.PrettyPrinter(indent=4)
-code = """INIT { let $var := "Hola" ; }"""
+code = """INIT { 
+let $var := "HOLA" ;
+    $var := "HOLAAA" ;
+    
+    PRINT 10 ;
+    PRINT "pipe es marica" ;
+    PRINT "pipe es marica" ;
+    
+}"""
 pp.pprint(parser.parse(code))
-#error al declarar
+# error al declarar
