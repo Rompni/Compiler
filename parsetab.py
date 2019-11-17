@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'AND CHARACTER COLON COMMA DIVIDE ELSE END EQ EQUAL FALSE FLOAT FOR GE GT ID IDTYPE IF INIT INTEGER LAND LBRACE LBRACKET LE LNOT LOR LPAREN LSHIFT LT MINUS MODULO NE NOT OR PERIOD PLUS RBRACE RBRACKET RPAREN RSHIFT SEMI STRING TIMES TRUE WHILE XORstart : INIT bodybody : LBRACE all_sentences RBRACEall_sentences : list_sentences sentence\n                    list_sentences : sentencesentence : declaration\n                | assign\n                | function_dec\n                | emptydeclaration : IDTYPE ID SEMIboolean : TRUE\n                | FALSEoperator : LOR\n                | LAND\n                | LNOT\n                | LT\n                | GT\n                | LE\n                | GE\n                | EQ\n                | NEexpression : tvariable operator tvariablefunction_cond : IF LPAREN expression RPAREN body\n                    | IF LPAREN expression RPAREN body ELSE bodyfunction_iter : iteration_statementiteration_statement : FOR LPAREN ID COLON ID RPAREN body\n                          | WHILE LPAREN expression RPAREN bodyfunction_dec : function_iter function_dec\n                    | function_cond function_dec\n                    | emptytvariable : STRING\n                 | ID\n                 | INTEGER\n                 | FLOAT\n                 | CHARACTER\n                 | booleanassign : IDTYPE ID EQUAL tvariable SEMIempty : '
+_lr_signature = 'AND CHARACTER COLON COMMA DIVIDE ELSE END EQ EQUAL FALSE FLOAT FOR GE GT ID IDTYPE IF INIT INTEGER LAND LBRACE LBRACKET LE LNOT LOR LPAREN LSHIFT LT MINUS MODULO NE NOT OR PERIOD PLUS PRINT RBRACE RBRACKET RPAREN RSHIFT SEMI STRING TIMES TRUE WHILE XORstart : INIT bodybody : LBRACE all_sentences RBRACEall_sentences : list_sentences sentence\n                    list_sentences : sentencesentence : declaration\n                | function_dec\n                | assign\n                | emptydeclaration : IDTYPE ID SEMIboolean : TRUE\n                | FALSEoperator : LOR\n                | LAND\n                | LNOT\n                | LT\n                | GT\n                | LE\n                | GE\n                | EQ\n                | NEprint : PRINT tvariable SEMIexpression : tvariable operator tvariablefunction_cond : IF LPAREN expression RPAREN body\n                    | IF LPAREN expression RPAREN body ELSE bodyfunction_iter : iteration_statementiteration_statement : FOR LPAREN ID COLON ID RPAREN body\n                          | WHILE LPAREN expression RPAREN bodyfunction_dec : function_iter function_dec\n                    | function_cond function_dec\n                    | print\n                    | emptytvariable : STRING\n                 | ID\n                 | INTEGER\n                 | FLOAT\n                 | CHARACTER\n                 | booleanassign : IDTYPE ID EQUAL tvariable SEMIempty : '
     
-_lr_action_items = {'INIT':([0,],[2,]),'$end':([1,3,19,],[0,-1,-2,]),'LBRACE':([2,43,55,61,62,],[4,4,4,4,4,]),'IDTYPE':([4,6,7,8,9,10,11,13,14,15,19,22,23,24,28,56,57,60,63,64,],[12,12,-4,-5,-6,-7,-8,-37,-37,-24,-2,-27,-29,-28,-9,-36,-22,-26,-23,-25,]),'IF':([4,6,7,8,9,10,11,13,14,15,19,22,23,24,28,56,57,60,63,64,],[16,16,-4,-5,-6,-7,-8,16,16,-24,-2,-27,-29,-28,-9,-36,-22,-26,-23,-25,]),'FOR':([4,6,7,8,9,10,11,13,14,15,19,22,23,24,28,56,57,60,63,64,],[17,17,-4,-5,-6,-7,-8,17,17,-24,-2,-27,-29,-28,-9,-36,-22,-26,-23,-25,]),'WHILE':([4,6,7,8,9,10,11,13,14,15,19,22,23,24,28,56,57,60,63,64,],[18,18,-4,-5,-6,-7,-8,18,18,-24,-2,-27,-29,-28,-9,-36,-22,-26,-23,-25,]),'RBRACE':([4,5,6,7,8,9,10,11,13,14,15,19,20,22,23,24,28,56,57,60,63,64,],[-37,19,-37,-4,-5,-6,-7,-8,-37,-37,-24,-2,-3,-27,-29,-28,-9,-36,-22,-26,-23,-25,]),'ID':([12,25,26,27,29,44,45,46,47,48,49,50,51,52,53,54,],[21,33,40,33,33,33,-12,-13,-14,-15,-16,-17,-18,-19,-20,59,]),'LPAREN':([16,17,18,],[25,26,27,]),'ELSE':([19,57,],[-2,61,]),'SEMI':([21,32,33,34,35,36,37,38,39,42,],[28,-30,-31,-32,-33,-34,-35,-10,-11,56,]),'EQUAL':([21,],[29,]),'STRING':([25,27,29,44,45,46,47,48,49,50,51,52,53,],[32,32,32,32,-12,-13,-14,-15,-16,-17,-18,-19,-20,]),'INTEGER':([25,27,29,44,45,46,47,48,49,50,51,52,53,],[34,34,34,34,-12,-13,-14,-15,-16,-17,-18,-19,-20,]),'FLOAT':([25,27,29,44,45,46,47,48,49,50,51,52,53,],[35,35,35,35,-12,-13,-14,-15,-16,-17,-18,-19,-20,]),'CHARACTER':([25,27,29,44,45,46,47,48,49,50,51,52,53,],[36,36,36,36,-12,-13,-14,-15,-16,-17,-18,-19,-20,]),'TRUE':([25,27,29,44,45,46,47,48,49,50,51,52,53,],[38,38,38,38,-12,-13,-14,-15,-16,-17,-18,-19,-20,]),'FALSE':([25,27,29,44,45,46,47,48,49,50,51,52,53,],[39,39,39,39,-12,-13,-14,-15,-16,-17,-18,-19,-20,]),'RPAREN':([30,32,33,34,35,36,37,38,39,41,58,59,],[43,-30,-31,-32,-33,-34,-35,-10,-11,55,-21,62,]),'LOR':([31,32,33,34,35,36,37,38,39,],[45,-30,-31,-32,-33,-34,-35,-10,-11,]),'LAND':([31,32,33,34,35,36,37,38,39,],[46,-30,-31,-32,-33,-34,-35,-10,-11,]),'LNOT':([31,32,33,34,35,36,37,38,39,],[47,-30,-31,-32,-33,-34,-35,-10,-11,]),'LT':([31,32,33,34,35,36,37,38,39,],[48,-30,-31,-32,-33,-34,-35,-10,-11,]),'GT':([31,32,33,34,35,36,37,38,39,],[49,-30,-31,-32,-33,-34,-35,-10,-11,]),'LE':([31,32,33,34,35,36,37,38,39,],[50,-30,-31,-32,-33,-34,-35,-10,-11,]),'GE':([31,32,33,34,35,36,37,38,39,],[51,-30,-31,-32,-33,-34,-35,-10,-11,]),'EQ':([31,32,33,34,35,36,37,38,39,],[52,-30,-31,-32,-33,-34,-35,-10,-11,]),'NE':([31,32,33,34,35,36,37,38,39,],[53,-30,-31,-32,-33,-34,-35,-10,-11,]),'COLON':([40,],[54,]),}
+_lr_action_items = {'INIT':([0,],[2,]),'$end':([1,3,21,],[0,-1,-2,]),'LBRACE':([2,47,59,65,66,],[4,4,4,4,4,]),'IDTYPE':([4,6,7,8,9,10,11,13,14,15,16,21,24,25,26,39,43,60,61,64,67,68,],[12,12,-4,-5,-6,-7,-8,-39,-39,-30,-25,-2,-28,-31,-29,-9,-21,-38,-23,-27,-24,-26,]),'IF':([4,6,7,8,9,10,11,13,14,15,16,21,24,25,26,39,43,60,61,64,67,68,],[17,17,-4,-5,-6,-7,-8,17,17,-30,-25,-2,-28,-31,-29,-9,-21,-38,-23,-27,-24,-26,]),'PRINT':([4,6,7,8,9,10,11,13,14,15,16,21,24,25,26,39,43,60,61,64,67,68,],[18,18,-4,-5,-6,-7,-8,18,18,-30,-25,-2,-28,-31,-29,-9,-21,-38,-23,-27,-24,-26,]),'FOR':([4,6,7,8,9,10,11,13,14,15,16,21,24,25,26,39,43,60,61,64,67,68,],[19,19,-4,-5,-6,-7,-8,19,19,-30,-25,-2,-28,-31,-29,-9,-21,-38,-23,-27,-24,-26,]),'WHILE':([4,6,7,8,9,10,11,13,14,15,16,21,24,25,26,39,43,60,61,64,67,68,],[20,20,-4,-5,-6,-7,-8,20,20,-30,-25,-2,-28,-31,-29,-9,-21,-38,-23,-27,-24,-26,]),'RBRACE':([4,5,6,7,8,9,10,11,13,14,15,16,21,22,24,25,26,39,43,60,61,64,67,68,],[-39,21,-39,-4,-5,-6,-7,-8,-39,-39,-30,-25,-2,-3,-28,-31,-29,-9,-21,-38,-23,-27,-24,-26,]),'ID':([12,18,27,37,38,40,48,49,50,51,52,53,54,55,56,57,58,],[23,30,30,44,30,30,30,-12,-13,-14,-15,-16,-17,-18,-19,-20,63,]),'LPAREN':([17,19,20,],[27,37,38,]),'STRING':([18,27,38,40,48,49,50,51,52,53,54,55,56,57,],[29,29,29,29,29,-12,-13,-14,-15,-16,-17,-18,-19,-20,]),'INTEGER':([18,27,38,40,48,49,50,51,52,53,54,55,56,57,],[31,31,31,31,31,-12,-13,-14,-15,-16,-17,-18,-19,-20,]),'FLOAT':([18,27,38,40,48,49,50,51,52,53,54,55,56,57,],[32,32,32,32,32,-12,-13,-14,-15,-16,-17,-18,-19,-20,]),'CHARACTER':([18,27,38,40,48,49,50,51,52,53,54,55,56,57,],[33,33,33,33,33,-12,-13,-14,-15,-16,-17,-18,-19,-20,]),'TRUE':([18,27,38,40,48,49,50,51,52,53,54,55,56,57,],[35,35,35,35,35,-12,-13,-14,-15,-16,-17,-18,-19,-20,]),'FALSE':([18,27,38,40,48,49,50,51,52,53,54,55,56,57,],[36,36,36,36,36,-12,-13,-14,-15,-16,-17,-18,-19,-20,]),'ELSE':([21,61,],[-2,65,]),'SEMI':([23,28,29,30,31,32,33,34,35,36,46,],[39,43,-32,-33,-34,-35,-36,-37,-10,-11,60,]),'EQUAL':([23,],[40,]),'LOR':([29,30,31,32,33,34,35,36,42,],[-32,-33,-34,-35,-36,-37,-10,-11,49,]),'LAND':([29,30,31,32,33,34,35,36,42,],[-32,-33,-34,-35,-36,-37,-10,-11,50,]),'LNOT':([29,30,31,32,33,34,35,36,42,],[-32,-33,-34,-35,-36,-37,-10,-11,51,]),'LT':([29,30,31,32,33,34,35,36,42,],[-32,-33,-34,-35,-36,-37,-10,-11,52,]),'GT':([29,30,31,32,33,34,35,36,42,],[-32,-33,-34,-35,-36,-37,-10,-11,53,]),'LE':([29,30,31,32,33,34,35,36,42,],[-32,-33,-34,-35,-36,-37,-10,-11,54,]),'GE':([29,30,31,32,33,34,35,36,42,],[-32,-33,-34,-35,-36,-37,-10,-11,55,]),'EQ':([29,30,31,32,33,34,35,36,42,],[-32,-33,-34,-35,-36,-37,-10,-11,56,]),'NE':([29,30,31,32,33,34,35,36,42,],[-32,-33,-34,-35,-36,-37,-10,-11,57,]),'RPAREN':([29,30,31,32,33,34,35,36,41,45,62,63,],[-32,-33,-34,-35,-36,-37,-10,-11,47,59,-22,66,]),'COLON':([44,],[58,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'start':([0,],[1,]),'body':([2,43,55,61,62,],[3,57,60,63,64,]),'all_sentences':([4,],[5,]),'list_sentences':([4,],[6,]),'sentence':([4,6,],[7,20,]),'declaration':([4,6,],[8,8,]),'assign':([4,6,],[9,9,]),'function_dec':([4,6,13,14,],[10,10,22,24,]),'empty':([4,6,13,14,],[11,11,23,23,]),'function_iter':([4,6,13,14,],[13,13,13,13,]),'function_cond':([4,6,13,14,],[14,14,14,14,]),'iteration_statement':([4,6,13,14,],[15,15,15,15,]),'expression':([25,27,],[30,41,]),'tvariable':([25,27,29,44,],[31,31,42,58,]),'boolean':([25,27,29,44,],[37,37,37,37,]),'operator':([31,],[44,]),}
+_lr_goto_items = {'start':([0,],[1,]),'body':([2,47,59,65,66,],[3,61,64,67,68,]),'all_sentences':([4,],[5,]),'list_sentences':([4,],[6,]),'sentence':([4,6,],[7,22,]),'declaration':([4,6,],[8,8,]),'function_dec':([4,6,13,14,],[9,9,24,26,]),'assign':([4,6,],[10,10,]),'empty':([4,6,13,14,],[11,11,25,25,]),'function_iter':([4,6,13,14,],[13,13,13,13,]),'function_cond':([4,6,13,14,],[14,14,14,14,]),'print':([4,6,13,14,],[15,15,15,15,]),'iteration_statement':([4,6,13,14,],[16,16,16,16,]),'tvariable':([18,27,38,40,48,],[28,42,42,46,62,]),'boolean':([18,27,38,40,48,],[34,34,34,34,34,]),'expression':([27,38,],[41,45,]),'operator':([42,],[48,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,41 +27,43 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> start","S'",1,None,None,None),
-  ('start -> INIT body','start',2,'p_start','parser.py',11),
-  ('body -> LBRACE all_sentences RBRACE','body',3,'p_body','parser.py',16),
-  ('all_sentences -> list_sentences sentence','all_sentences',2,'p_all_sentences','parser.py',20),
-  ('list_sentences -> sentence','list_sentences',1,'p_list_sentences','parser.py',25),
-  ('sentence -> declaration','sentence',1,'p_sentence','parser.py',29),
-  ('sentence -> assign','sentence',1,'p_sentence','parser.py',30),
+  ('start -> INIT body','start',2,'p_start','parser.py',12),
+  ('body -> LBRACE all_sentences RBRACE','body',3,'p_body','parser.py',17),
+  ('all_sentences -> list_sentences sentence','all_sentences',2,'p_all_sentences','parser.py',21),
+  ('list_sentences -> sentence','list_sentences',1,'p_list_sentences','parser.py',26),
+  ('sentence -> declaration','sentence',1,'p_sentence','parser.py',30),
   ('sentence -> function_dec','sentence',1,'p_sentence','parser.py',31),
-  ('sentence -> empty','sentence',1,'p_sentence','parser.py',32),
-  ('declaration -> IDTYPE ID SEMI','declaration',3,'p_declaration','parser.py',36),
-  ('boolean -> TRUE','boolean',1,'p_booleans','parser.py',40),
-  ('boolean -> FALSE','boolean',1,'p_booleans','parser.py',41),
-  ('operator -> LOR','operator',1,'p_operators','parser.py',45),
-  ('operator -> LAND','operator',1,'p_operators','parser.py',46),
-  ('operator -> LNOT','operator',1,'p_operators','parser.py',47),
-  ('operator -> LT','operator',1,'p_operators','parser.py',48),
-  ('operator -> GT','operator',1,'p_operators','parser.py',49),
-  ('operator -> LE','operator',1,'p_operators','parser.py',50),
-  ('operator -> GE','operator',1,'p_operators','parser.py',51),
-  ('operator -> EQ','operator',1,'p_operators','parser.py',52),
-  ('operator -> NE','operator',1,'p_operators','parser.py',53),
-  ('expression -> tvariable operator tvariable','expression',3,'p_expression','parser.py',57),
-  ('function_cond -> IF LPAREN expression RPAREN body','function_cond',5,'p_function_condition','parser.py',61),
-  ('function_cond -> IF LPAREN expression RPAREN body ELSE body','function_cond',7,'p_function_condition','parser.py',62),
-  ('function_iter -> iteration_statement','function_iter',1,'p_function_iteration','parser.py',66),
-  ('iteration_statement -> FOR LPAREN ID COLON ID RPAREN body','iteration_statement',7,'p_iteration_statement','parser.py',70),
-  ('iteration_statement -> WHILE LPAREN expression RPAREN body','iteration_statement',5,'p_iteration_statement','parser.py',71),
-  ('function_dec -> function_iter function_dec','function_dec',2,'p_function_declaration','parser.py',75),
-  ('function_dec -> function_cond function_dec','function_dec',2,'p_function_declaration','parser.py',76),
-  ('function_dec -> empty','function_dec',1,'p_function_declaration','parser.py',77),
-  ('tvariable -> STRING','tvariable',1,'p_tvariable','parser.py',82),
-  ('tvariable -> ID','tvariable',1,'p_tvariable','parser.py',83),
-  ('tvariable -> INTEGER','tvariable',1,'p_tvariable','parser.py',84),
-  ('tvariable -> FLOAT','tvariable',1,'p_tvariable','parser.py',85),
-  ('tvariable -> CHARACTER','tvariable',1,'p_tvariable','parser.py',86),
-  ('tvariable -> boolean','tvariable',1,'p_tvariable','parser.py',87),
-  ('assign -> IDTYPE ID EQUAL tvariable SEMI','assign',5,'p_assign','parser.py',91),
-  ('empty -> <empty>','empty',0,'p_empty','parser.py',95),
+  ('sentence -> assign','sentence',1,'p_sentence','parser.py',32),
+  ('sentence -> empty','sentence',1,'p_sentence','parser.py',33),
+  ('declaration -> IDTYPE ID SEMI','declaration',3,'p_declaration','parser.py',37),
+  ('boolean -> TRUE','boolean',1,'p_booleans','parser.py',41),
+  ('boolean -> FALSE','boolean',1,'p_booleans','parser.py',42),
+  ('operator -> LOR','operator',1,'p_operators','parser.py',46),
+  ('operator -> LAND','operator',1,'p_operators','parser.py',47),
+  ('operator -> LNOT','operator',1,'p_operators','parser.py',48),
+  ('operator -> LT','operator',1,'p_operators','parser.py',49),
+  ('operator -> GT','operator',1,'p_operators','parser.py',50),
+  ('operator -> LE','operator',1,'p_operators','parser.py',51),
+  ('operator -> GE','operator',1,'p_operators','parser.py',52),
+  ('operator -> EQ','operator',1,'p_operators','parser.py',53),
+  ('operator -> NE','operator',1,'p_operators','parser.py',54),
+  ('print -> PRINT tvariable SEMI','print',3,'p_print_statement','parser.py',58),
+  ('expression -> tvariable operator tvariable','expression',3,'p_expression','parser.py',62),
+  ('function_cond -> IF LPAREN expression RPAREN body','function_cond',5,'p_function_condition','parser.py',66),
+  ('function_cond -> IF LPAREN expression RPAREN body ELSE body','function_cond',7,'p_function_condition','parser.py',67),
+  ('function_iter -> iteration_statement','function_iter',1,'p_function_iteration','parser.py',71),
+  ('iteration_statement -> FOR LPAREN ID COLON ID RPAREN body','iteration_statement',7,'p_iteration_statement','parser.py',75),
+  ('iteration_statement -> WHILE LPAREN expression RPAREN body','iteration_statement',5,'p_iteration_statement','parser.py',76),
+  ('function_dec -> function_iter function_dec','function_dec',2,'p_function_declaration','parser.py',80),
+  ('function_dec -> function_cond function_dec','function_dec',2,'p_function_declaration','parser.py',81),
+  ('function_dec -> print','function_dec',1,'p_function_declaration','parser.py',82),
+  ('function_dec -> empty','function_dec',1,'p_function_declaration','parser.py',83),
+  ('tvariable -> STRING','tvariable',1,'p_tvariable','parser.py',87),
+  ('tvariable -> ID','tvariable',1,'p_tvariable','parser.py',88),
+  ('tvariable -> INTEGER','tvariable',1,'p_tvariable','parser.py',89),
+  ('tvariable -> FLOAT','tvariable',1,'p_tvariable','parser.py',90),
+  ('tvariable -> CHARACTER','tvariable',1,'p_tvariable','parser.py',91),
+  ('tvariable -> boolean','tvariable',1,'p_tvariable','parser.py',92),
+  ('assign -> IDTYPE ID EQUAL tvariable SEMI','assign',5,'p_assign','parser.py',98),
+  ('empty -> <empty>','empty',0,'p_empty','parser.py',103),
 ]

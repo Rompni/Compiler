@@ -1,6 +1,7 @@
 import ply.lex as lex
 import re
 
+ERROR2 = ""
 tokens = (
     # Literals (identifier, integer constant, float constant, string constant, char const)
     "ID", 'IDTYPE', 'INTEGER', 'FLOAT', 'STRING', 'CHARACTER',
@@ -24,7 +25,8 @@ reserved = (
     'WHILE',
     'FOR',
     'TRUE',
-    'FALSE'
+    'FALSE',
+    'PRINT'
 )
 tokens = tokens + reserved
 
@@ -68,11 +70,30 @@ t_COLON = r':'
 
 #
 t_ID = r'\$[A-Za-z_][A-Za-z0-9_]*'
-t_INTEGER = r'\d+([uU]|[lL]|[uU][lL]|[lL][uU])?'
-t_FLOAT = r'((\d+)(\.\d+)(e(\+|-)?(\d+))? | (\d+)e(\+|-)?(\d+))([lL]|[fF])?'
 t_STRING = r'\"([^\\\n]|(\\.))*?\"'
 t_CHARACTER = r'(L)?\'([^\\\n]|(\\.))*?\''
 t_IDTYPE = r'let'
+
+
+def t_INTEGER(t):
+    r'\d+([uU]|[lL]|[uU][lL]|[lL][uU])?'
+    try:
+        t.value = int(t.value)
+    except ValueError:
+        print("integer value too large", t.value)
+        t.value = 0
+    return t
+
+
+
+def t_FLOAT(t):
+    r'((\d+)(\.\d+)(e(\+|-)?(\d+))? | (\d+)e(\+|-)?(\d+))([lL]|[fF])?'
+    t.value = float(t.value)
+    return t
+
+def t_PRINT(t):
+    r'PRINT'
+    return t
 
 # Reserved
 t_INIT = r'INIT'
@@ -91,7 +112,7 @@ def t_newline(t):
     return t
 
 
-t_ignore = ' \t'
+t_ignore = ' \t\n'
 
 
 def t_error(t):

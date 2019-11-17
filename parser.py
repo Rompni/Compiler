@@ -1,9 +1,10 @@
+import sys
+
 import ply.yacc as yacc
-import lexer
+from lexer import tokens
 import pprint
 
-tokens = lexer.tokens
-
+pp = pprint.PrettyPrinter(indent=4)
 ERROR = 1
 
 
@@ -27,8 +28,8 @@ def p_list_sentences(p):
 
 def p_sentence(p):
     """sentence : declaration
-                | assign
                 | function_dec
+                | assign
                 | empty"""
 
 
@@ -53,6 +54,10 @@ def p_operators(p):
                 | NE"""
 
 
+def p_print_statement(p):
+    """print : PRINT tvariable SEMI"""
+
+
 def p_expression(p):
     """expression : tvariable operator tvariable"""
 
@@ -74,8 +79,8 @@ def p_iteration_statement(p):
 def p_function_declaration(p):
     """function_dec : function_iter function_dec
                     | function_cond function_dec
+                    | print
                     | empty"""
-
 
 
 def p_tvariable(p):
@@ -86,9 +91,12 @@ def p_tvariable(p):
                  | CHARACTER
                  | boolean"""
 
+    print(p.slice[1])
+
 
 def p_assign(p):
     """assign : IDTYPE ID EQUAL tvariable SEMI"""
+    print("assign", p.slice)
 
 
 def p_empty(p):
@@ -106,6 +114,7 @@ def p_error(p):
 
 
 parser = yacc.yacc()
-#pp = pprint.PrettyPrinter(indent=4)
-#code = 'INIT { WHILE ( $x > 5 ) {} }'
-#pp.pprint(parser.parse(code))
+pp = pprint.PrettyPrinter(indent=4)
+code = """INIT { let $var := "Hola" ; }"""
+pp.pprint(parser.parse(code))
+#error al declarar
