@@ -9,7 +9,6 @@ ERROR = 1
 
 def p_start(p):
     """start : INIT body"""
-    print("start")
 
 
 def p_body(p):
@@ -39,6 +38,7 @@ def p_declaration(p):
 def p_booleans(p):
     """boolean : TRUE
                 | FALSE"""
+    p[0] = p[1]
 
 
 def p_operators(p):
@@ -56,7 +56,8 @@ def p_operators(p):
 def p_print_statement(p):
     """print : PRINT tvariable SEMI
             | PRINT ID SEMI"""
-    print(p.slice)
+    p[0] = {'name': p[1], 'value': p[2]}
+    print(p[0])
 
 
 def p_expression(p):
@@ -91,6 +92,7 @@ def p_tvariable(p):
                  | FLOAT
                  | CHARACTER
                  | boolean"""
+    p[0] = p[1]
 
 
 def p_assign(p):
@@ -114,15 +116,16 @@ def p_error(p):
 
 
 parser = yacc.yacc()
+
 pp = pprint.PrettyPrinter(indent=4)
+
 code = """INIT { 
-let $var := "HOLA" ;
-    $var := "HOLAAA" ;
-    
-    PRINT 10 ;
-    PRINT "pipe es marica" ;
-    PRINT "pipe es marica" ;
-    
+    PRINT 10;
 }"""
-pp.pprint(parser.parse(code))
+
+result = parser.parse(code)
+
+if result is not None:
+    pp.pprint(result)
+
 # error al declarar
