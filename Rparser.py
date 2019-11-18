@@ -1,10 +1,12 @@
 import sys
 import ply.yacc as yacc
-from lexer import tokens
-import pprint, ast
+from Rlexer import tokens
+import pprint
 
 pp = pprint.PrettyPrinter(indent=4)
-ERROR = 0
+ERROR = True
+ERRORES = ""
+variables = {}
 
 precedence = (
     ("nonassoc", "PRINT"),
@@ -14,8 +16,6 @@ precedence = (
     ('right', 'UMINUS'),
 )
 
-variables = {}
-
 
 def p_start(p):
     """start : INIT body"""
@@ -23,7 +23,6 @@ def p_start(p):
 
 def p_body(p):
     """body : LBRACE all_sentences RBRACE"""
-    p[0] = p[2]
 
 def p_all_sentences(p):
     """all_sentences : all_sentences list_sentences
@@ -78,11 +77,15 @@ def p_expression_number(p):
 
 def p_expression_id(p):
     "expression : ID"
-    global ERROR
     try:
-        p[0] = variables[p[1]]
+        if p[1] in variables:
+            p[0] = variables[p[1]]
+        else:
+            print("entro")
+            ERRORES = ("id no defined '%s'" % p[1])
+            p[0] = 0
+            raise Exception(ERRORES)
     except LookupError:
-        ERROR = ("id no definida '%s'" % p[1])
         p[0] = 0
 
 
@@ -121,8 +124,7 @@ def p_booleans(p):
 def p_condition(p):
     """condition : expression conditions expression
                     """
-    print(p[1], p[2], p[3])
-
+    #print(p[1], p[2], p[3])
 
 
 def p_exprecondition(p):
@@ -132,16 +134,15 @@ def p_exprecondition(p):
 
 def p_declaration(p):
     """declaration : IDTYPE ID SEMI"""
-    global ERROR
-
-    if p[2] not in variables:
-        print("new")
-        variables[p[2]] = 0
-    else:
-        raise Exception("Variable declarada")
-
-
-
+    try:
+        if p[2] not in variables:
+            print("new")
+            variables[p[2]] = 0
+        else:
+            ERRORES = "id defined '%s'" % p[2]
+            raise Exception(ERRORES)
+    except ValueError:
+        print("Error")
 
 
 def p_booleans(p):
@@ -172,12 +173,12 @@ def p_assign(p):
     """assign : IDTYPE ID EQUAL tvariable SEMI
                 | IDTYPE ID EQUAL expression SEMI
                 """
-    global ERROR
+    global ERRORES
     try:
-        if p[2] is not variables:
+        if p[2] not in variables:
             variables[p[2]] = p[4]
     except LookupError:
-        ERROR = ("id definida '%s'" % p[1])
+        ERRORES = "id defined '%s'" % p[1]
         p[0] = 0
 
 
@@ -187,8 +188,11 @@ def p_assignre(p):
              """
     global ERROR
     try:
-        if p[1] is variables:
+        if p[1] in variables:
             variables[p[1]] = p[3]
+        else:
+            ERRORES = ("ID is not defined '%s" % p[1])
+            raise Exception(ERRORES)
     except LookupError:
         ERROR = ("ID is not defined '%s" % p[1])
         p[0] = 0
@@ -199,13 +203,17 @@ def p_empty(p):
 
 
 def p_error(p):
+    global ERRORES
     if ERROR:
         if p is not None:
             print('syntax error', p)
             print('line error: ', str(p.lineno))
+            ERRORES = "Line Error: " + str(p.value)
+            raise Exception(ERRORES)
     else:
-        raise Exception(p)
-        print('Sintax', 'error')
+        ERRORES = "Syntax Error"
+        print('Syntax', 'error')
+        raise Exception(ERRORES)
 
 
 parser = yacc.yacc()
@@ -213,10 +221,11 @@ pp = pprint.PrettyPrinter(indent=4)
 
 
 code = """
-INIT 
-{ 
-
+INIT
+{
     let $var := 3;
+    let $x;
+    let $X;
     IF($var > 4)
     {
         IF($var > 4)
@@ -225,30 +234,31 @@ INIT
             {
                 WHILE ( $x > 5)
                 {
-                    FOR ( let $var2 := 1 ; $var < 1 ; $var := $var + 1 ; ) 
+                    FOR ( let $var2 := 1 ; $var < 1 ; $x := $var + 1 ; )
                     {
-                        IF ( $X == $var ) 
+                        IF ( $X == $var )
                         {
-                            let $var3 := "Hola Mundo" ;                    
+                            let $var3 := "Hola Mundo" ;
                         }
                         ELSE()
                         {
                             let $var4 := 'x';
                         }
-                        
+
                     }
-                } 
+                }
             }
         }
     }
 }
+
 """
 
-result = parser.parse(code)
+#result = parser.parse(code)
 
-pp.pprint(variables)
+#pp.pprint(variables)
 
-if result is not None:
-    pp.pprint(result)
+#if result is not None:
+#    pp.pprint(result)
 
 

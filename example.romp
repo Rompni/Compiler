@@ -1,6 +1,8 @@
 INIT
 {
     let $var := 3;
+    let $x;
+    let $X;
     IF($var > 4)
     {
         IF($var > 4)
@@ -26,3 +28,5 @@ INIT
         }
     }
 }
+
+

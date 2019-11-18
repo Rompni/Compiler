@@ -168,9 +168,10 @@ t_ignore = ' \t\n'
 #    t.lexer.skip(1)
 
 def t_error(t):
-    raise SyntaxError("Unknown symbol %r" % (t.value[0],))
-    print("Skipping", repr(t.value[0]))
-    t.lexer.skip(1)
+    #raise SyntaxError("Unknown symbol %r" % (t.value[0],))
+    raise Exception(t)
+    #print("Skipping", repr(t.value[0]))
+    #t.lexer.skip(1)
 
 
 lexer = lex.lex()
