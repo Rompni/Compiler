@@ -69,10 +69,28 @@ t_SEMI = r';'
 t_COLON = r':'
 
 #
-t_ID = r'\$[A-Za-z_][A-Za-z0-9_]*'
-t_STRING = r'\"([^\\\n]|(\\.))*?\"'
-t_CHARACTER = r'(L)?\'([^\\\n]|(\\.))*?\''
+
 t_IDTYPE = r'let'
+
+
+def t_CHARACTER(t):
+    r'(L)?\'([^\\\n]|(\\.))*?\''
+    return t
+
+
+def t_STRING(t):
+    r'\"([^\\\n]|(\\.))*?\"'
+    try:
+        t.value = str(t.value)
+    except ValueError:
+        print("error", t.value)
+        t.value = str("")
+    return t
+
+
+def t_ID(t):
+    r'\$[A-Za-z_][A-Za-z0-9_]*'
+    return t
 
 
 def t_INTEGER(t):
@@ -85,25 +103,55 @@ def t_INTEGER(t):
     return t
 
 
-
 def t_FLOAT(t):
     r'((\d+)(\.\d+)(e(\+|-)?(\d+))? | (\d+)e(\+|-)?(\d+))([lL]|[fF])?'
-    t.value = float(t.value)
+    try:
+        t.value = float(t.value)
+    except ValueError:
+        print("error", t.value)
+        t.value = 0.0
     return t
+
 
 def t_PRINT(t):
     r'PRINT'
     return t
 
+
 # Reserved
-t_INIT = r'INIT'
-t_END = r'END'
-t_IF = r'IF'
-t_ELSE = r'ELSE'
-t_WHILE = r'WHILE'
-t_FOR = r'FOR'
-t_TRUE = r'TRUE'
-t_FALSE = r'FALSE'
+def t_INIT(t):
+    r'INIT'
+    return t
+
+
+def t_IF(t):
+    r'IF'
+    return t
+
+
+def t_ELSE(t):
+    r'ELSE'
+    return t
+
+
+def t_WHILE(t):
+    r'WHILE'
+    return t
+
+
+def t_FOR(t):
+    r'FOR'
+    return t
+
+
+def t_TRUE(t):
+    r'TRUE'
+    return t
+
+
+def t_FALSE(t):
+    r'FALSE'
+    return t
 
 
 def t_newline(t):
@@ -115,8 +163,13 @@ def t_newline(t):
 t_ignore = ' \t\n'
 
 
+#def t_error(t):
+#    print("Illegal character '{0}' at line {1}".format(t.value[0], t.lineno))
+#    t.lexer.skip(1)
+
 def t_error(t):
-    print("Illegal character '{0}' at line {1}".format(t.value[0], t.lineno))
+    raise SyntaxError("Unknown symbol %r" % (t.value[0],))
+    print("Skipping", repr(t.value[0]))
     t.lexer.skip(1)
 
 

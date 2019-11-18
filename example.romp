@@ -1,4 +1,28 @@
-INIT {
+INIT
+{
+    let $var := 3;
+    IF($var > 4)
+    {
+        IF($var > 4)
+        {
+            IF($var > 4)
+            {
+                WHILE ( $x > 5)
+                {
+                    FOR ( let $var2 := 1 ; $var < 1 ; $var := $var + 1 ; )
+                    {
+                        IF ( $X == $var )
+                        {
+                            let $var3 := "Hola Mundo" ;
+                        }
+                        ELSE()
+                        {
+                            let $var4 := 'x';
+                        }
 
+                    }
+                }
+            }
+        }
+    }
 }
-

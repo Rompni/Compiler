@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import filedialog, messagebox
-import lexer, parser
+
+from Rparser import parser, ERROR
 
 
 # Creo la clase editor
@@ -61,17 +62,17 @@ class PyRompniNotePad:
         f.close()
 
     def compilar(self):
- #       datos = self.text.get("1.0", END)
-  #      #compiler.ERROR = 0
-  #      try:
-  #          print(self.text.get("1.0", END))
-   #         compiler.parser.parse(datos, tracking=True)
-    #        print('[ok]')
-    #        messagebox.showinfo(message="Compilado", title="resultado")
-#
- #       except:
-  #          print('[error]')
-   #         messagebox.showerror(message="error sintaxis", title="resultado")
+        datos = self.text.get("1.0", END)
+        parser.ERROR = 1
+        try:
+            #print(datos)
+            print(self.text.get("1.0", END))
+            parser.parse(datos, tracking=True)
+            print('[ok]')
+            messagebox.showinfo(message="Compilado", title="resultado")
+        except:
+            print('[error]')
+            messagebox.showerror(message="error sintaxis", title="resultado")
         pass
 
     def sobre(self):
