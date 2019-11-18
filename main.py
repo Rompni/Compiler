@@ -16,7 +16,7 @@ class MainWindow:
         self.root.resizable(0, 0)
         self.root.title('Rompni NotePad')
         self.root.geometry(f'{self.WIDTH}x{self.HEIGHT}')
-        self.root.iconbitmap('icono.ico')
+        #self.root.iconbitmap('icono.ico')
         self.fileName = None
 
         # menu
@@ -31,7 +31,7 @@ class MainWindow:
         self.file_dropdown.add_command(label='Exit', command=self.root.destroy)
 
         self.run_dropdown = Menu(self.menuBar, tearoff=0)
-        self.run_dropdown.add_command(label='▶  Run', command=self.compiler)
+        self.run_dropdown.add_command(label='▶  Run', accelerator='Ctrl+R', command=self.compiler)
 
         self.menuBar.add_cascade(label='File', menu=self.file_dropdown)
         self.menuBar.add_cascade(label='Run', menu=self.run_dropdown)
@@ -106,6 +106,7 @@ class MainWindow:
         self.text.bind('<Control-o>', self.openFile)
         self.text.bind('<Control-s>', self.saveFile)
         self.text.bind('<Control-S>', self.saveAsFile)
+        self.text.bind('<Control-r>', self.compiler)
         self.text.bind('<Key>', self.updateStatus)
 
     def updateStatus(self, *args):
@@ -114,7 +115,7 @@ class MainWindow:
         else:
             self.statusBar.set('Rompni - 0.1 Compiler')
 
-    def compiler(self):
+    def compiler(self, *args):
         data = self.text.get(1.0, END)
         print(data)
         Rparser.ERRORES = ""
